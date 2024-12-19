@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,9 +17,19 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $categoryId = $this->getRandomCategoryId();
+
         return [
-            'title'     => $this->faker->word(),
-            'content'   => $this->faker->paragraphs(asText: true),
+            'title'         => fake()->name(),
+            'content'       => $this->faker->paragraphs(asText: true),
+            'category_id'   => $categoryId,
         ];
+    }
+
+    private function getRandomCategoryId(): int
+    {
+        $category = Category::inRandomOrder()->first();
+
+        return $category->id ?? 1;
     }
 }

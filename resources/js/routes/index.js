@@ -7,11 +7,19 @@ const routes = [
     {
         path: '/',
         name: 'posts.index',
-        component: PostsIndex },
+        component: PostsIndex,
+        meta: {
+            title: 'Posts',
+        }
+    },
     {
         path: '/posts/create',
         name: 'posts.create',
-        component: PostsCreate },
+        component: PostsCreate,
+        meta: {
+            title: 'Add new post',
+        }
+    },
 ]
 
 export default createRouter({

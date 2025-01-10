@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="storePost(post)">
+    <form @submit.prevent="updatePost(post)">
         <!-- Title -->
         <div>
             <label for="post-title" class="block text-sm font-medium text-gray-700">
@@ -32,10 +32,10 @@
                 Category
             </label>
             <select v-model="post.category_id" id="post-category" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-            <option value="" selected>-- Choose category --</option>
-            <option v-for="category in categories" :key="category.id" :value="category.id">
-                {{ category.name }}
-            </option>>
+                <option value="" selected>-- Choose category --</option>
+                <option v-for="category in categories" :key="category.id" :value="category.id">
+                    {{ category.name }}
+                </option>>
             </select>
             <div class="text-red-600 mt-1">
                 <div v-for="message in validationErrors?.category_id">
@@ -67,23 +67,19 @@
         </div>
     </form>
 </template>
+
 <script setup>
-import { onMounted, reactive } from "vue"
-import useCategories from "@/composables/categories.js"
-import usePosts from "@/composables/posts.js";
+import { onMounted } from "vue";
+import { useRoute } from "vue-router";
+import useCategories from "@/composables/categories";
+import usePosts from "@/composables/posts";
 
 const { categories, getCategories } = useCategories()
-const { storePost, validationErrors, isLoading } = usePosts()
-
-const post = reactive({
-    title: '',
-    content: '',
-    category_id: '',
-    thumbnail: '',
-})
+const { post, getPost, updatePost, validationErrors, isLoading } = usePosts()
+const route = useRoute()
 
 onMounted(() => {
+    getPost(route.params.id)
     getCategories()
-    console.log(validationErrors.value)
 })
 </script>
